@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Un Roblos o Que</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+      color: white;
+      position: relative;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    #movingText {
+      position: absolute;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+      user-select: none;
+    }
+    .fallingText {
+      position: absolute;
+      top: -30px;
+      font-size: 1.5rem;
+      color: white;
+      user-select: none;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="movingText">un roblos o que</div>
+
+  <script>
+    const movingText = document.getElementById('movingText');
+    const body = document.body;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    function moveRandomly() {
+      const x = Math.random() * (width - movingText.clientWidth);
+      const y = Math.random() * (height - movingText.clientHeight);
+      movingText.style.left = x + 'px';
+      movingText.style.top = y + 'px';
+    }
+
+    setInterval(moveRandomly, 200);
+
+    function createFallingText() {
+      const text = document.createElement('div');
+      text.classList.add('fallingText');
+      text.textContent = 'un roblos o que';
+      text.style.left = Math.random() * (width - 150) + 'px';
+      text.style.top = '-30px';
+      body.appendChild(text);
+
+      let posY = -30;
+      const speed = 5 + Math.random() * 3;
+
+      function fall() {
+        if (posY < height) {
+          posY += speed;
+          text.style.top = posY + 'px';
+          requestAnimationFrame(fall);
+        } else {
+          body.removeChild(text);
+        }
+      }
+      fall();
+    }
+
+    setInterval(createFallingText, 400);
+
+    moveRandomly();
+
+    window.addEventListener('resize', () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
